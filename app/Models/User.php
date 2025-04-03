@@ -1,20 +1,15 @@
 <?php
-
 namespace App\Models;
-
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable,HasApiTokens;
-
     protected $primaryKey = 'user_id'; // تحديد المفتاح الأساسي
-
 
     /**
      * The attributes that are mass assignable.
@@ -28,7 +23,6 @@ class User extends Authenticatable
         'phone_number',
         'birth_date',
     ];
-
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -38,7 +32,6 @@ class User extends Authenticatable
         'password_hash',
         'remember_token',
     ];
-
     /**
      * Get the attributes that should be cast.
      *
@@ -47,8 +40,32 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-            //'email_verified_at' => 'datetime',
-            //'password' => 'hashed',
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
         ];
+    }
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new \App\Notifications\CustomVerifyEmail);
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function address()
+    {
+        return $this->hasMany(Address::class);
+    }
+
+    public function ratedItems()
+    {
+        return $this->hasMany(Rated::class);
     }
 }
