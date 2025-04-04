@@ -23,7 +23,7 @@ class CustomVerifyEmail extends Notification
             'verification.verify',
             now()->addMinutes(config('auth.verification.expire', 60)),
             [
-                'id' => $notifiable->getKey(),
+                'user_id' => $notifiable->getKey(),
                 'hash' => sha1($notifiable->getEmailForVerification()),
             ]
         );

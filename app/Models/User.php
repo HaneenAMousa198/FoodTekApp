@@ -5,7 +5,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-class User extends Authenticatable
+
+class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable,HasApiTokens;
@@ -22,6 +23,7 @@ class User extends Authenticatable
         'password',
         'phone_number',
         'birth_date',
+        'role_id'
     ];
     /**
      * The attributes that should be hidden for serialization.
@@ -29,7 +31,7 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $hidden = [
-        'password_hash',
+        'password',
         'remember_token',
     ];
     /**
@@ -64,8 +66,18 @@ class User extends Authenticatable
         return $this->hasMany(Address::class);
     }
 
-    public function ratedItems()
+    public function ratedItem()
     {
         return $this->hasMany(Rated::class);
+    }
+
+    public function order()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function chat()
+    {
+        return $this->hasMany(Chat::class);
     }
 }

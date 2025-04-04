@@ -4,7 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Issue extends Model
-{
-    //
+
+class Issue extends Model {
+    protected $fillable = [
+        'user_id', 
+        'description'
+    ];
+    public function user() 
+    { 
+        return $this->belongsTo(User::class); 
+    }
 }

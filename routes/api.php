@@ -13,9 +13,10 @@ Route::post('register', [UserController::class, 'register']);
 Route::post('login', [UserController::class, 'login']);
 Route::post('logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
 
-
-Route::post('/email/verify/{id}/{hash}', [VerificationEmailController::class, 'emailVerify'])->name('verification.verify');
+// تفعيل البريد الإلكتروني
+Route::get('/email/verify/{user_id}', [VerificationEmailController::class, 'emailVerify'])
+->name('verification.verify');
 Route::post('/resend-email-verify', [VerificationEmailController::class, 'resendEmailVerificationMail'])->middleware('auth:sanctum');
 
-Route::post('/forgot-password', [VerificationEmailController::class, 'forgotPassword'])->middleware('web');
-Route::post('/reset-password', [VerificationEmailController::class, 'resetPassword'])->middleware('web')->name('password.reset');
+Route::post('/forgot-password', [VerificationEmailController::class, 'forgotPassword'])->middleware('api');
+Route::post('/reset-password', [VerificationEmailController::class, 'resetPassword'])->middleware('api')->name('password.reset');

@@ -53,9 +53,12 @@ class VerificationEmailController extends Controller
 
     public function resendEmailVerificationMail(Request $request) 
     {
-        $user_id = $request->input('user_id');
+    $user = $request->user(); // المستخدم الحالي من التوكن
 
-        $user = User::findOrFail($user_id);
+        // $user = User::findOrFail($user_id);
+
+        $user = User::where('email', $request->email)->firstOrFail();
+
 
         if (!$user) {
             return response()->json([

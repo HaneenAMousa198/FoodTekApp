@@ -4,18 +4,21 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class OrderItem extends Model {
+class Delivery extends Model {
     protected $fillable = [
         'order_id', 
-        'menu_id', 
-        'quantity'
+        'staff_id', 
+        'driver_name', 
+        'status', 
+        'status_time', 
+        'delivery_address'
     ];
     public function order() 
     { 
         return $this->belongsTo(Order::class); 
     }
-    public function menu() 
+    public function staff() 
     { 
-        return $this->belongsTo(Menu::class); 
+        return $this->belongsTo(Staff::class); 
     }
 }
