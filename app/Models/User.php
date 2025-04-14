@@ -10,7 +10,7 @@ class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable,HasApiTokens;
-    protected $primaryKey = 'user_id'; // تحديد المفتاح الأساسي
+    // protected $primaryKey = 'id'; // تحديد المفتاح الأساسي
 
     /**
      * The attributes that are mass assignable.
