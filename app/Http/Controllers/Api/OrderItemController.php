@@ -3,47 +3,39 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\OrderItem;
+use App\Http\Requests\StoreOrderItemRequest;
+use App\Http\Requests\UpdateOrderItemRequest;
+use App\Http\Resources\OrderItemResource;
 
 class OrderItemController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return OrderItemResource::collection(OrderItem::with('menu')->get());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(StoreOrderItemRequest $request)
     {
-        //
+        $orderItem = OrderItem::create($request->validated());
+        return new OrderItemResource($orderItem);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(OrderItem $orderItem)
     {
-        //
+        $orderItem->load('menu');
+        return new OrderItemResource($orderItem);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(UpdateOrderItemRequest $request, OrderItem $orderItem)
     {
-        //
+        $orderItem->update($request->validated());
+        return new OrderItemResource($orderItem);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(OrderItem $orderItem)
     {
-        //
+        $orderItem->delete();
+        return response()->json(['message' => 'Deleted successfully']);
     }
 }

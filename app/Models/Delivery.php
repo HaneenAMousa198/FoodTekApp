@@ -2,23 +2,34 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Delivery extends Model {
+class Delivery extends Model
+{
+    use HasFactory;
+
     protected $fillable = [
-        'order_id', 
-        'staff_id', 
-        'driver_name', 
-        'status', 
-        'status_time', 
-        'delivery_address'
+        'order_id',
+        'driver_id',      // يشير إلى جدول staff أو users ذوي دور driver
+        'staff_id',
+        'status',         // pending ‑ on_the_way ‑ delivered
+        'status_time',
+        'delivered_address',
     ];
-    public function order() 
-    { 
-        return $this->belongsTo(Order::class); 
+
+    protected $casts = [
+        'delivered_at' => 'datetime',
+    ];
+
+    /* العلاقات */
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
     }
-    public function staff() 
-    { 
-        return $this->belongsTo(Staff::class); 
+
+    public function driver()
+    {
+        return $this->belongsTo(Staff::class, 'driver_id');
     }
 }

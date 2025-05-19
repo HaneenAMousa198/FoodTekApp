@@ -3,47 +3,38 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\Permission;
+use App\Http\Requests\StorePermissionRequest;
+use App\Http\Requests\UpdatePermissionRequest;
+use App\Http\Resources\PermissionResource;
 
 class PermissionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return PermissionResource::collection(Permission::all());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(StorePermissionRequest $request)
     {
-        //
+        $permission = Permission::create($request->validated());
+        return new PermissionResource($permission);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(Permission $permission)
     {
-        //
+        return new PermissionResource($permission);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(UpdatePermissionRequest $request, Permission $permission)
     {
-        //
+        $permission->update($request->validated());
+        return new PermissionResource($permission);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Permission $permission)
     {
-        //
+        $permission->delete();
+        return response()->json(['message' => 'Deleted successfully']);
     }
 }

@@ -3,47 +3,38 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\Favorite;
+use App\Http\Requests\StoreFavoriteRequest;
+use App\Http\Requests\UpdateFavoriteRequest;
+use App\Http\Resources\FavoriteResource;
 
 class FavoriteController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return FavoriteResource::collection(Favorite::all());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(StoreFavoriteRequest $request)
     {
-        //
+        $favorite = Favorite::create($request->validated());
+        return new FavoriteResource($favorite);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(Favorite $favorite)
     {
-        //
+        return new FavoriteResource($favorite);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(UpdateFavoriteRequest $request, Favorite $favorite)
     {
-        //
+        $favorite->update($request->validated());
+        return new FavoriteResource($favorite);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Favorite $favorite)
     {
-        //
+        $favorite->delete();
+        return response()->json(['message' => 'Deleted successfully']);
     }
 }

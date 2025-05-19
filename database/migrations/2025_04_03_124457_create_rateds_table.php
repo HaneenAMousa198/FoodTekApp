@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('rateds', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('order_item_id')->constrained()->onDelete('cascade');
-            $table->integer('rating')->unsigned();
-            $table->text('review')->nullable();
+            $table->foreignId('menu_id')->constrained()->onDelete('cascade');
+            $table->unsignedTinyInteger('rating'); // من 1 إلى 5 مثلاً
+            $table->text('comment')->nullable();
             $table->timestamps();
         });
     }

@@ -2,16 +2,22 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+class Issue extends Model
+{
+    use HasFactory;
 
-class Issue extends Model {
     protected $fillable = [
-        'user_id', 
-        'description'
+        'user_id',
+        'title',
+        'description',
+        'status',
     ];
-    public function user() 
-    { 
-        return $this->belongsTo(User::class); 
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

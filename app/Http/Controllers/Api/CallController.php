@@ -2,48 +2,39 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Call;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreCallRequest;
+use App\Http\Requests\UpdateCallRequest;
+use App\Http\Resources\CallResource;
 
 class CallController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return CallResource::collection(Call::all());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(StoreCallRequest $request)
     {
-        //
+        $call = Call::create($request->validated());
+        return new CallResource($call);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(Call $call)
     {
-        //
+        return new CallResource($call);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(UpdateCallRequest $request, Call $call)
     {
-        //
+        $call->update($request->validated());
+        return new CallResource($call);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Call $call)
     {
-        //
+        $call->delete();
+        return response()->json(['message' => 'Deleted successfully']);
     }
 }

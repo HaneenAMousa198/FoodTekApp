@@ -8,12 +8,17 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class UserResource extends JsonResource
 {
     /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
+     * تحويل بيانات المستخدم إلى JSON.
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id'           => $this->id,
+            'full_name'    => $this->full_name,
+            'email'        => $this->email,
+            'phone_number' => $this->phone_number,
+            'birth_date'   => $this->birth_date,
+            'role'         => new RoleResource($this->whenLoaded('role')),
+        ];
     }
 }

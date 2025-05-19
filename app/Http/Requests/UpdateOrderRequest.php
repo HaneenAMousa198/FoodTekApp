@@ -6,23 +6,19 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateOrderRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
-            //
+            'user_id'      => 'sometimes|required|exists:users,id',
+            'delivery_id'  => 'sometimes|nullable|exists:deliveries,id',
+            'status'       => 'sometimes|required|string|max:50',
+            'total_price'  => 'sometimes|required|numeric|min:0',
+            'order_date'   => 'sometimes|required|date',
         ];
     }
 }

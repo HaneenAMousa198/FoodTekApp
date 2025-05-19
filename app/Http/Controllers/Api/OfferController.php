@@ -2,48 +2,39 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Offer;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreOfferRequest;
+use App\Http\Requests\UpdateOfferRequest;
+use App\Http\Resources\OfferResource;
 
 class OfferController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return OfferResource::collection(Offer::all());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(StoreOfferRequest $request)
     {
-        //
+        $offer = Offer::create($request->validated());
+        return new OfferResource($offer);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(Offer $offer)
     {
-        //
+        return new OfferResource($offer);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(UpdateOfferRequest $request, Offer $offer)
     {
-        //
+        $offer->update($request->validated());
+        return new OfferResource($offer);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Offer $offer)
     {
-        //
+        $offer->delete();
+        return response()->json(['message' => 'Deleted successfully']);
     }
 }

@@ -18,9 +18,9 @@ use App\Http\Controllers\Api\OrderItemController;
 use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\RatedController;
 use App\Http\Controllers\Api\RoleController;
-use App\Http\Controllers\Api\RolePermissionController;
 use App\Http\Controllers\Api\StaffController;
 use App\Http\Controllers\Api\CategoryController;
+
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -56,7 +56,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('permissions', PermissionController::class);
     Route::apiResource('rateds', RatedController::class);
     Route::apiResource('roles', RoleController::class);
-    Route::apiResource('role-permissions', RolePermissionController::class);
     Route::apiResource('staff', StaffController::class);
     Route::apiResource('categories', CategoryController::class);
 });

@@ -2,48 +2,39 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Chat;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreChatRequest;
+use App\Http\Requests\UpdateChatRequest;
+use App\Http\Resources\ChatResource;
 
 class ChatController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return ChatResource::collection(Chat::all());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(StoreChatRequest $request)
     {
-        //
+        $chat = Chat::create($request->validated());
+        return new ChatResource($chat);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(Chat $chat)
     {
-        //
+        return new ChatResource($chat);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(UpdateChatRequest $request, Chat $chat)
     {
-        //
+        $chat->update($request->validated());
+        return new ChatResource($chat);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Chat $chat)
     {
-        //
+        $chat->delete();
+        return response()->json(['message' => 'Deleted successfully']);
     }
 }

@@ -3,47 +3,38 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\Issue;
+use App\Http\Requests\StoreIssueRequest;
+use App\Http\Requests\UpdateIssueRequest;
+use App\Http\Resources\IssueResource;
 
 class IssueController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return IssueResource::collection(Issue::all());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(StoreIssueRequest $request)
     {
-        //
+        $issue = Issue::create($request->validated());
+        return new IssueResource($issue);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(Issue $issue)
     {
-        //
+        return new IssueResource($issue);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(UpdateIssueRequest $request, Issue $issue)
     {
-        //
+        $issue->update($request->validated());
+        return new IssueResource($issue);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Issue $issue)
     {
-        //
+        $issue->delete();
+        return response()->json(['message' => 'Deleted successfully']);
     }
 }

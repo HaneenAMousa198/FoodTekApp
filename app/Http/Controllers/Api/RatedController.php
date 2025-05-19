@@ -3,47 +3,38 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\Rated;
+use App\Http\Requests\StoreRatedRequest;
+use App\Http\Requests\UpdateRatedRequest;
+use App\Http\Resources\RatedResource;
 
 class RatedController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return RatedResource::collection(Rated::with(['user', 'menu'])->get());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(StoreRatedRequest $request)
     {
-        //
+        $rated = Rated::create($request->validated());
+        return new RatedResource($rated->load(['user', 'menu']));
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(Rated $rated)
     {
-        //
+        return new RatedResource($rated->load(['user', 'menu']));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(UpdateRatedRequest $request, Rated $rated)
     {
-        //
+        $rated->update($request->validated());
+        return new RatedResource($rated->load(['user', 'menu']));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Rated $rated)
     {
-        //
+        $rated->delete();
+        return response()->json(['message' => 'Deleted successfully']);
     }
 }

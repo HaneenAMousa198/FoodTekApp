@@ -14,6 +14,11 @@ class StaffResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
-    }
+ return [
+            'id' => $this->id,
+            'user' => new UserResource($this->whenLoaded('user')),
+            'deliveries' => DeliveryResource::collection($this->whenLoaded('deliveries')),
+            'chats' => ChatResource::collection($this->whenLoaded('chats')),
+            'calls' => CallResource::collection($this->whenLoaded('calls')),
+        ];    }
 }
