@@ -22,6 +22,8 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestamp('email_verified_at')->nullable();//email_verified_at
             $table->foreignId('role_id')->constrained()->onDelete('cascade'); // ربط المستخدم بالدور
+             $table->string('otp')->nullable();
+            $table->timestamp('otp_expires_at')->nullable();
             $table->timestamps(); // created_at & updated_at
         });
     }

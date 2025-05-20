@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('delivery_id')->constrained()->onDelete('set null')->nullable(); // إذا حابب تكون قابلة للتفريغ
+            $table->foreignId('delivery_id')->nullable(); // إذا حابب تكون قابلة للتفريغ
             $table->string('status');
             $table->decimal('total_price', 10, 2);
             $table->dateTime('order_date');
